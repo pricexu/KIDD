@@ -58,8 +58,6 @@ parser.add_argument('--orth_reg', type=float, default=1e-3,
                     help='the regularization parameter of the orthogonal_loss.')
 parser.add_argument('--reg_lambda', type=float, default=1e-6,
                     help='the lambda hyperparameter of the KRR.')
-parser.add_argument('--skip_initial_test', type=int, default=0,
-                    help='Whether to skip the initial test.')
 parser.add_argument('--test_gap', type=int, default=1,
                     help='How many updates to have a test.')
 
@@ -361,14 +359,6 @@ if __name__ == '__main__':
 
     optimizer_A_S = torch.optim.Adam([U_S, V_S], lr=lr_A)
     optimizer_X_S = torch.optim.Adam([X_S], lr=lr_X)
-
-    if args.skip_initial_test != 1:
-        print("Initial Performance")
-        performance = test(U_S.detach().bmm(V_S.detach()), X_S.detach(), y_S.detach(), "mean", nclass)
-        print("Mean Pooling -- Test Mean: {:.3f}, Training Std: {:.3f}".format(performance[0], performance[1]))
-        performance = test(U_S.detach().bmm(V_S.detach()), X_S.detach(), y_S.detach(), "sum", nclass)
-        print("Sum Pooling -- Test Mean: {:.3f}, Training Std: {:.3f}".format(performance[0], performance[1]))
-        print()
 
     T_loader = DataLoader(training_set, batch_size=batch_size_T, shuffle=True, num_workers=0)
     cnt = 0
