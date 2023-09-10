@@ -75,7 +75,6 @@ if args.device == 'cpu':
     device = 'cpu'
 else:
     device = 'cuda:' + args.device
-torch.autograd.set_detect_anomaly(True)
 
 seed = 1234
 seed_everything(seed)
